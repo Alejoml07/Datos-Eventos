@@ -81,24 +81,30 @@ export class CargaMasivaCampanasComponent {
       let jsonData: any[] = XLSX.utils.sheet_to_json(worksheet, { raw: false, defval: "No registra" });
       jsonData = jsonData.filter((_, index) => index !== 0);
 
+      console.log('jsonData', jsonData);
+
       if (Array.isArray(jsonData)) {
         jsonData = jsonData.filter((element) => (element.cedula !== '' && 
         element.nombres !== '' &&
         element.apellidos !== '' &&
         element.celular1 !== '' && 
+        element.nombreEvento !== '' &&
+        element.fechaEvento !== '' &&
+        element.autorizaDatos !== '' &&
         element.genero !== '') && 
         (element.cedula !== 'No registra' && 
         element.nombres !== 'No registra' && 
         element.apellidos !== 'No registra' && 
         element.celular1 !== 'No registra' && 
-        element.ciudad !== 'No registra' && 
-        element.departamento !== 'No registra' && 
+        element.nombreEvento !== 'No registra' &&
+        element.fechaEvento !== 'No registra' &&
+        element.autorizaDatos !== 'No registra' &&
         element.genero !== 'No registra'));
         console.log('Estructura: ', jsonData);
 
         const expectedFields = [
-          'cedula', 'nombres', 'apellidos', 'telefono1', 'celular1', 
-          'correo1', 'fechaNacimiento', 'genero'];
+          'cedula', 'nombres', 'apellidos', 'celular1', 
+          'correo1', 'fechaNacimiento', 'genero','nombreEvento','fechaEvento','autorizaDatos'];
         this.hasExpectedStructure = true;
         this.mensaje = '';
 
@@ -112,7 +118,7 @@ export class CargaMasivaCampanasComponent {
         });
 
         if (this.hasExpectedStructure) {
-          console.log('El arreglo JSON tiene la estructura esperada');
+          console.log('El arreglo JSON tiene la estructura esperada', jsonData);
         } else {
           console.log('El arreglo JSON no tiene la estructura esperada:', this.mensaje);
         }
@@ -178,6 +184,10 @@ export class CargaMasivaCampanasComponent {
         this.mensajeError += ' Departamento ';
         this.contador++;
       }
+      if (elemento.nombreEvento && (typeof elemento.nombreEvento !== 'string' || elemento.nombreEvento.length > 300)) {
+        this.mensajeError += ' nombreEvento ';
+        this.contador++;
+      }
       if (elemento.genero && (typeof elemento.genero !== 'string' || elemento.genero.length > 300)) {
         this.mensajeError += ' Género ';
         this.contador++;
@@ -206,7 +216,7 @@ export class CargaMasivaCampanasComponent {
 
 
   downloadExcel(): void {
-    window.open("https://stgactincentivos.blob.core.windows.net/$web/FormatoUsuario.xlsx?sp=r&st=2024-07-08T16:12:07Z&se=2030-07-09T00:12:07Z&sv=2022-11-02&sr=b&sig=uqzoBBQNeq68VvYj5zW8bMBCDggpPWFU2cqVBuAEScQ%3D", "_blank");
+    window.open("https://stgactincentivos.blob.core.windows.net/$web/FormatoBDEventos.xlsx?sp=r&st=2024-08-22T16:18:32Z&se=2030-08-23T00:18:32Z&sv=2022-11-02&sr=b&sig=ZWkfOSzwTEA4GpFNF9XYBCZl54P7oQ9eDTC3l3QGc0I%3D", "_blank");
   }
 
   convertToJSON() {
@@ -222,6 +232,7 @@ export class CargaMasivaCampanasComponent {
         const worksheet = workbook.Sheets[sheetName];
   
         let jsonData: any[] = XLSX.utils.sheet_to_json(worksheet, { raw: false, defval: "No registra" });
+        jsonData = jsonData.filter((_, index) => index !== 0);
   
         if (Array.isArray(jsonData)) {
           jsonData = jsonData.filter((element) => 
@@ -230,12 +241,16 @@ export class CargaMasivaCampanasComponent {
             element.apellidos !== '' &&
             element.celular1 !== '' && 
             element.genero !== '' &&
+            element.nombreEvento !== '' &&
+            element.fechaEvento !== '' &&
+            element.autorizaDatos !== '' &&
             element.cedula !== 'No registra' && 
             element.nombres !== 'No registra' && 
             element.apellidos !== 'No registra' && 
             element.celular1 !== 'No registra' && 
-            element.ciudad !== 'No registra' && 
-            element.departamento !== 'No registra' && 
+            element.nombreEvento !== 'No registra' &&
+            element.fechaEvento !== 'No registra' &&
+            element.autorizaDatos !== 'No registra' &&
             element.genero !== 'No registra'
           );
   
@@ -315,10 +330,11 @@ export class CargaMasivaCampanasComponent {
   }
 
   transformDate(fecha: string): string {
+    console.log('fecha', fecha);
     const partes = fecha.split('/');
     if (partes.length === 3) {
-      const dia = partes[0].padStart(2, '0');
-      const mes = partes[1].padStart(2, '0');
+      const mes = partes[0].padStart(2, '0');
+      const dia = partes[1].padStart(2, '0');
       const anio = partes[2].length === 2 ? '20' + partes[2] : partes[2];
       return `${anio}-${mes}-${dia}T00:00:00`;
     }
