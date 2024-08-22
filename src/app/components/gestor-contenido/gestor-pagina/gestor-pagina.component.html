@@ -1,0 +1,54 @@
+<div class="container-fluid">
+  <div class="card theme-card">
+    <div class="card-body">
+      <div class="container">
+        <div class="header">
+          <input type="text" class="form-control mb-3" [value]="pageTitle" (input)="onContentChange($event, 'pageTitle')" />
+        </div>
+
+        <div class="banner">
+          <img src="assets/banner-image.jpg" alt="PlaSerez Banner" class="banner-img" />
+        </div>
+
+        <div class="content">
+          <input type="text" class="form-control mb-3" [value]="welcomeTitle" (input)="onContentChange($event, 'welcomeTitle')" />
+          <textarea class="form-control mb-3" [value]="description" (input)="onContentChange($event, 'description')"></textarea>
+          <textarea class="form-control mb-3" [value]="podcastInfo" (input)="onContentChange($event, 'podcastInfo')"></textarea>
+          <textarea class="form-control mb-3" [value]="invitationMessage" (input)="onContentChange($event, 'invitationMessage')"></textarea>
+          <input type="text" class="form-control mb-3" [value]="eventDate" (input)="onContentChange($event, 'eventDate')" />
+        </div>
+
+        <form class="form">
+          <div class="form-row">
+            <input type="text" class="form-control" placeholder="Ingresa tu nombre" />
+            <input type="text" class="form-control" placeholder="Ingresa tus apellidos" />
+          </div>
+
+          <div class="form-row">
+            <input type="email" class="form-control" placeholder="Ingresa tu email" />
+            <input type="tel" class="form-control" placeholder="Ingresa tu número celular" />
+          </div>
+
+          <div class="form-row">
+            <input type="text" class="form-control" placeholder="Ingresa tu número de cédula" />
+            <input type="text" class="form-control" placeholder="Ingresa tu país" />
+          </div>
+
+          <div class="footer">
+            <textarea class="form-control" [value]="legalText" (input)="onContentChange($event, 'legalText')"></textarea>
+          </div>
+
+          <!-- <div class="checkbox-row">
+            <input type="checkbox" id="accept" />
+            <label class="form-check-label" for="accept" [innerHTML]="checkboxText"></label>
+          </div> -->
+
+          <!-- <button type="submit" class="btn btn-dark">SUSCRIBIRME</button>
+          <a href="#" class="cancel-link">No, gracias</a> -->
+        </form>
+
+        <button (click)="saveChanges()" class="btn btn-primary">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>

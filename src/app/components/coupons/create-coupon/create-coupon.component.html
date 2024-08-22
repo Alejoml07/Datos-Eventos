@@ -1,0 +1,114 @@
+Container-fluid starts
+<div class="container-fluid">
+    <div class="card theme-card">
+      <div class="card-header">
+        <h3>Bonos digitales</h3>
+      </div>
+      <div class="card-body">
+        <!-- Form section -->
+        <div class="form-section">
+          <form [formGroup]="bonosForm" (ngSubmit)="addBono()" class="mb-4">
+            <div class="form-group mb-3">
+                <label for="valorBonos" class="form-label">Valor bonos*</label>
+                <input
+                  id="valorBonos"
+                  formControlName="valorBonos"
+                  type="text"
+                  class="form-control input-sm"
+                  (input)="formatCurrency($event)"
+                  [ngClass]="{'is-invalid': bonosForm.get('valorBonos').invalid && bonosForm.get('valorBonos').touched}"
+                />
+                <div *ngIf="bonosForm.get('valorBonos').invalid && bonosForm.get('valorBonos').touched" class="text-danger">
+                  <small *ngIf="bonosForm.get('valorBonos').errors.required">El valor del bono es obligatorio.</small>
+                  <small *ngIf="bonosForm.get('valorBonos').errors.pattern">El valor del bono debe ser un número válido.</small>
+                  <small *ngIf="bonosForm.get('valorBonos').errors.min">El valor del bono no puede ser menor a ${{valorDenominacionInicial}}.</small>
+                  <small *ngIf="bonosForm.get('valorBonos').errors.max">El valor del bono no puede ser mayor a ${{valorDenominacionFinal}}.</small>
+                </div>
+              </div>
+            <div class="form-group mb-3">
+              <label for="cantidadBonos" class="form-label">Cantidad de bonos*</label>
+              <input
+                id="cantidadBonos"
+                formControlName="cantidadBonos"
+                type="text"
+                class="form-control input-sm"
+                (input)="validateQuantity($event)"
+              />
+              <div *ngIf="bonosForm.get('cantidadBonos').invalid && bonosForm.get('cantidadBonos').touched" class="text-danger">
+                <small *ngIf="bonosForm.get('cantidadBonos').errors.required">La cantidad de bonos es obligatoria.</small>
+                <small *ngIf="bonosForm.get('cantidadBonos').errors.pattern">La cantidad de bonos debe ser un número válido.</small>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="correo" class="form-label">Correo a donde llegarán los bonos*</label>
+              <input
+                id="correo"
+                formControlName="correo"
+                type="email"
+                class="form-control input-sm"
+              />
+              <div *ngIf="bonosForm.get('correo').invalid && bonosForm.get('correo').touched" class="text-danger">
+                <small *ngIf="bonosForm.get('correo').errors.required">El correo es obligatorio.</small>
+                <small *ngIf="bonosForm.get('correo').errors.email">El correo debe ser una dirección válida.</small>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="observacion" class="form-label">Observación</label>
+              <input
+                id="observacion"
+                formControlName="observacion"
+                type="text"
+                class="form-control input-sm observation-textarea"
+              />
+              <div *ngIf="bonosForm.get('observacion').invalid && bonosForm.get('observacion').touched" class="text-danger">
+                <small *ngIf="bonosForm.get('observacion').errors.required">La observación es obligatoria.</small>
+              </div>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-custom-purple btn-lg">+ Agregar</button>
+            </div>
+          </form>
+        </div>
+  
+        <!-- Separator -->
+        <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+  
+        <!-- Table section -->
+        <div class="table-responsive">
+          <!-- <h3 class="text-center mt-5">Lista de bonos</h3> -->
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Valor bono</th>
+                <th>Cantidad bonos</th>
+                <th>Correo</th>
+                <th>Observación</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let bono of bonosList; let i = index">
+                <td>{{ bono.valorBonos }}</td>
+                <td>{{ bono.cantidadBonos }}</td>
+                <td>{{ bono.correo }}</td>
+                <td>{{ bono.observacion }}</td>
+                <td>
+                  <a style="cursor: pointer;" (click)="deleteBono(i)" title="Eliminar"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="red"
+                      class="bi bi-x-lg" viewBox="0 0 16 16">
+                      <path
+                          d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                  </svg></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-custom-purple btn-lg" (click)="printLocalStorage()">Crear bonos digitales</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Container-fluid Ends-->
+  
