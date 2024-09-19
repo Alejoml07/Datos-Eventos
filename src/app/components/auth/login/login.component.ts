@@ -68,11 +68,6 @@ export class LoginComponent implements OnInit {
         keyApp : "CUSCE"
 
       };
-      // const loginPayload = {
-      //   Usuario: formValue.email,
-      //   Nit: formValue.nit,
-      //   Pass: formValue.pwd
-      // };
 
       console.log(loginPayload); 
       const context = this;

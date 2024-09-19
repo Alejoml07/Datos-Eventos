@@ -1,119 +1,197 @@
 html, body {
-    background-color: #ffffff !important; /* Fondo blanco aplicado a todo el HTML */
-    margin: 0 !important; /* Eliminar márgenes por defecto */
-    padding: 0 !important; /* Eliminar padding por defecto */
-    width: 100% !important; /* Asegura que ocupe el 100% del ancho */
-    height: 100% !important; /* Asegura que ocupe el 100% de la altura */
+  background-color: #ffffff !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .container {
-    font-family: 'Arial', sans-serif;
-    max-width: 950px;
-    margin: 0 auto;
-    // padding: 20px;
-    text-align: center;
-    color: #000;
-  }
-  
-  .header {
-    margin-bottom: 20px;
-    font-family: 'Times New Roman', serif; /* Asegúrate de usar una fuente similar */
-    // font-size: 36px; /* Ajusta según el tamaño necesario */
-    font-weight: normal; /* Si el texto debe ser más delgado */
-    color: #333; /* Elige un color similar al de la imagen */
-    letter-spacing: 0.5px; /* Ajusta el espaciado entre letras si es necesario */
- 
-  }
-  
-  .banner {
-    text-align: center;
-  }
-  
-  .banner-img {
-    width: 100%;
-    height: auto;
-  }
-  
-  .content h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    margin-top: 15px;
+  font-family: 'Arial', sans-serif;
+  max-width: 950px;
+  margin: 0 auto;
+  text-align: center;
+  color: #000;
+}
 
-    font-weight: bold;
-  }
-  
-  .content p {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .form {
-    margin-top: 30px;
-  }
-  
-  .form-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-  }
-  
-  .form-row input {
-    width: 48%;
-    padding: 10px;
-    border: 1px solid #333;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  .checkbox-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    font-size: 14px;
-  }
-  
-  .checkbox-row input {
-    margin-right: 10px;
-  }
-  
-  .btn-submit {
-    background-color: #000;
-    color: #fff;
-    border: none;
-    padding: 15px;
-    width: 100%;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .btn-submit:hover {
-    background-color: #333;
-  }
-  
-  .cancel-link {
-    display: block;
-    margin-top: 10px;
-    font-size: 14px;
-    margin-bottom: 30px;
-    color: #000;
-    text-decoration: underline;
-  }
-  
-  .cancel-link:hover {
-    color: #555;
-  }
-  
-  .footer {
-    margin-top: 30px;
-    margin-bottom: 30px;
+.header {
+  margin-bottom: 20px;
+  font-family: 'Times New Roman', serif;
+  font-weight: normal;
+  color: #333;
+  letter-spacing: 0.5px;
+}
 
-    font-size: 10px;
-    text-align: left;
-    color: #333;
+.banner {
+  text-align: center;
+}
+
+.banner-img {
+  width: 100%;
+  height: auto;
+}
+
+.content h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.content p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.form {
+  margin-top: 30px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Crea dos columnas de igual tamaño */
+  gap: 20px; /* Espacio entre los inputs */
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.form-group input.ng-invalid.ng-touched {
+  border: 1px solid #FF0000;
+  background-color: #FFEEEE;
+}
+
+.error-message {
+  color: #FF0000;
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: left;
+}
+
+/* Agrega un estilo para el espacio vacío */
+.form-group.empty {
+  height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+/* Ocultar elementos sin dejar espacio vacío */
+.form-group[ng-reflect-ng-if="false"] {
+  display: none;
+}
+
+.form-group input.ng-invalid.ng-touched {
+  border: 1px solid #FF0000;
+  background-color: #FFEEEE;
+}
+
+.btn-submit {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-submit:hover {
+  background-color: #333;
+}
+
+.cancel-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  margin-bottom: 30px;
+  color: #000;
+  text-decoration: underline;
+}
+
+.cancel-link:hover {
+  color: #555;
+}
+
+.footer {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 10px;
+  text-align: left;
+  color: #333;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loader {
+  width: 96px;
+  height: 96px;
+  display: inline-block;
+  position: relative;
+}
+
+.loader::after,
+.loader::before {
+  content: '';
+  box-sizing: border-box;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 4px solid #000000;
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: animloader 2s linear infinite;
+}
+
+.loader::after {
+  animation-delay: 1s;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.checkbox-row input {
+  margin-right: 10px;
+}
+
+@keyframes animloader {
+  0% {
+    transform: scale(0);
+    opacity: 1;
   }
-  
-  [contenteditable="true"] {
-    border: 1px dashed #ccc;
-    padding: 5px;
+  100% {
+    transform: scale(1);
+    opacity: 0;
   }
+}
+
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  font-size: 12px;
+  background-color: #fff; /* Ensure consistency with inputs */
+  // -webkit-appearance: none; /* Optional: hide default arrow on some browsers */
+}

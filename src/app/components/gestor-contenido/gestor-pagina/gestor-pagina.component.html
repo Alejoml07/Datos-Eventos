@@ -1,54 +1,412 @@
-<div class="container-fluid">
-  <div class="card theme-card">
-    <div class="card-body">
-      <div class="container">
-        <div class="header">
-          <input type="text" class="form-control mb-3" [value]="pageTitle" (input)="onContentChange($event, 'pageTitle')" />
-        </div>
+<div *ngIf="isLoading" class="loading-spinner">
+  <span class="loader"></span>
+</div>
 
-        <div class="banner">
-          <img src="assets/banner-image.jpg" alt="PlaSerez Banner" class="banner-img" />
-        </div>
-
-        <div class="content">
-          <input type="text" class="form-control mb-3" [value]="welcomeTitle" (input)="onContentChange($event, 'welcomeTitle')" />
-          <textarea class="form-control mb-3" [value]="description" (input)="onContentChange($event, 'description')"></textarea>
-          <textarea class="form-control mb-3" [value]="podcastInfo" (input)="onContentChange($event, 'podcastInfo')"></textarea>
-          <textarea class="form-control mb-3" [value]="invitationMessage" (input)="onContentChange($event, 'invitationMessage')"></textarea>
-          <input type="text" class="form-control mb-3" [value]="eventDate" (input)="onContentChange($event, 'eventDate')" />
-        </div>
-
-        <form class="form">
+<form *ngIf="!isLoading" [formGroup]="form">
+  <div class="container-fluid">
+    <div class="card theme-card">
+      <div class="card-body">
+        <div class="container">
+          <!-- Inputs paralelos para Nombre y Fecha del Evento -->
           <div class="form-row">
-            <input type="text" class="form-control" placeholder="Ingresa tu nombre" />
-            <input type="text" class="form-control" placeholder="Ingresa tus apellidos" />
+            <div class="col-md-6">
+              <label for="nombreEvento">Nombre del evento</label>
+              <input
+                type="text"
+                id="nombreEvento"
+                class="form-control"
+                formControlName="nombreEvento"
+                (input)="onContentChange('eventName')"
+                placeholder="Nombre del evento"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="fechaEvento">Fecha del evento</label>
+              <input
+                type="date"
+                id="fechaEvento"
+                class="form-control"
+                formControlName="fechaEvento"
+                (input)="onContentChange('eventDate')"
+                placeholder="Fecha del evento"
+              />
+            </div>
+          </div>
+          <!-- Título de la página -->
+          <div class="header">
+            <label for="pageTitle">Título de la página</label>
+            <input
+              type="text"
+              id="pageTitle"
+              class="form-control mb-3"
+              formControlName="pageTitle"
+              (input)="onContentChange('pageTitle')"
+              placeholder="Título de la página"
+            />
+          </div>
+
+          <!-- Sección para la imagen -->
+          <div class="container mt-5">
+            <img
+              *ngIf="imagenesApi.imagen2"
+              [src]="imagenesApi.imagen2"
+              class="img-fluid mb-2"
+              alt="Imagen 1"
+            />
+            <div class="mb-3">
+              <label for="imageUpload" class="form-label">Selecciona la imagen</label>
+              <input
+                type="file"
+                class="form-control input-bold-border"
+                id="imageUpload"
+                (change)="selectFile($event, 'imagen2')"
+                multiple
+              />
+            </div>
+
+            <!-- Previsualización de imágenes subidas -->
+            <div *ngIf="previews['imagen2']" class="container mt-5">
+              <h3>Imágenes subidas</h3>
+              <div class="row">
+                <div class="col-md-4 mt-3">
+                  <img
+                    *ngIf="previews['imagen2']"
+                    [src]="previews['imagen2']"
+                    alt="Uploaded Image"
+                    class="img-thumbnail"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contenido adicional -->
+          <div class="content">
+            <div class="form-group">
+              <label for="welcomeTitle">Título de bienvenida</label>
+              <input
+                type="text"
+                id="welcomeTitle"
+                class="form-control mb-3"
+                formControlName="welcomeTitle"
+                (input)="onContentChange('welcomeTitle')"
+                placeholder="Título de bienvenida"
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">Descripción</label>
+              <textarea
+                id="description"
+                class="form-control mb-3"
+                formControlName="description"
+                (input)="onContentChange('description')"
+                placeholder="Descripción"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="podcastInfo">Información del podcast</label>
+              <textarea
+                id="podcastInfo"
+                class="form-control mb-3"
+                formControlName="podcastInfo"
+                (input)="onContentChange('podcastInfo')"
+                placeholder="Información del podcast"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="invitationMessage">Mensaje de invitación</label>
+              <textarea
+                id="invitationMessage"
+                class="form-control mb-3"
+                formControlName="invitationMessage"
+                (input)="onContentChange('invitationMessage')"
+                placeholder="Mensaje de invitación"
+              ></textarea>
+            </div>
           </div>
 
           <div class="form-row">
-            <input type="email" class="form-control" placeholder="Ingresa tu email" />
-            <input type="tel" class="form-control" placeholder="Ingresa tu número celular" />
+            <div class="col-md-6">
+              <input 
+                type="checkbox"
+                [checked]="campos[0].mostrar" 
+                (change)="toggleField(0, $event)"
+              />
+              <label for="nombre">Nombre</label>
+              <input
+                *ngIf="campos[0].mostrar"
+                type="text"
+                id="nombre"
+                class="form-control"
+                formControlName="nombre"
+                placeholder="Ingresa tu nombre"
+              />
+              <div *ngIf="isFieldInvalid('nombre')" class="error-message">Obligatorio</div>
+            </div>
+            <div class="col-md-6">
+              <input 
+                type="checkbox"
+                [checked]="campos[1].mostrar" 
+                (change)="toggleField(1, $event)"
+              />
+              <label for="apellidos">Apellidos</label>
+              <input
+                *ngIf="campos[1].mostrar"
+                type="text"
+                id="apellidos"
+                class="form-control"
+                formControlName="apellidos"
+                placeholder="Ingresa tus apellidos"
+              />
+              <div *ngIf="isFieldInvalid('apellidos')" class="error-message">Obligatorio</div>
+            </div>
+          </div>
+          
+          <!-- Form para Cédula y Celular -->
+          <div class="form-row mt-3">
+            <div class="col-md-6">
+              <input 
+                type="checkbox"
+                [checked]="campos[2].mostrar" 
+                (change)="toggleField(2, $event)"
+              />
+              <label for="cedula">Cédula</label>
+              <input
+                *ngIf="campos[2].mostrar"
+                type="text"
+                id="cedula"
+                class="form-control"
+                formControlName="cedula"
+                placeholder="Ingresa tu número de cédula"
+              />
+              <div *ngIf="isFieldInvalid('cedula')" class="error-message">
+                <span *ngIf="form.get('cedula')?.errors?.['required']">Obligatorio</span>
+                <span *ngIf="form.get('cedula')?.errors?.['pattern']">Debe ser un valor numérico válido</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <input 
+                type="checkbox"
+                [checked]="campos[3].mostrar" 
+                (change)="toggleField(3, $event)"
+              />
+              <label for="celular">Celular</label>
+              <input
+                *ngIf="campos[3].mostrar"
+                type="tel"
+                id="celular"
+                class="form-control"
+                formControlName="celular"
+                placeholder="Ingresa tu número celular"
+              />
+              <div *ngIf="isFieldInvalid('celular')" class="error-message">
+                <span *ngIf="form.get('celular')?.errors?.['required']">Obligatorio</span>
+                <span *ngIf="form.get('celular')?.errors?.['pattern']">Debe ser un valor numérico válido</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Form para Email y País -->
+          <div class="form-row mt-3">
+            <div class="col-md-6">
+              <input 
+                type="checkbox"
+                [checked]="campos[4].mostrar" 
+                (change)="toggleField(4, $event)"
+              />
+              <label for="email">Email</label>
+              <input
+                *ngIf="campos[4].mostrar"
+                type="email"
+                id="email"
+                class="form-control"
+                formControlName="email"
+                placeholder="Ingresa tu email"
+              />
+              <div *ngIf="isFieldInvalid('email')" class="error-message">
+                <span *ngIf="form.get('email')?.errors?.['required']">Obligatorio</span>
+                <span *ngIf="form.get('email')?.errors?.['email']">Correo electrónico no válido</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <input 
+                type="checkbox"
+                [checked]="campos[5].mostrar" 
+                (change)="toggleField(5, $event)"
+              />
+              <label for="pais">País</label>
+              <input
+                *ngIf="campos[5].mostrar"
+                type="text"
+                id="pais"
+                class="form-control"
+                formControlName="pais"
+                placeholder="Ingresa tu país"
+              />
+              <div *ngIf="isFieldInvalid('pais')" class="error-message">Obligatorio</div>
+            </div>
           </div>
 
-          <div class="form-row">
-            <input type="text" class="form-control" placeholder="Ingresa tu número de cédula" />
-            <input type="text" class="form-control" placeholder="Ingresa tu país" />
+              <!-- Form para FechaNacimiento y Genero -->
+              <div class="form-row mt-3">
+                <div class="col-md-6">
+                  <input 
+                    type="checkbox"
+                    [checked]="campos[6].mostrar" 
+                    (change)="toggleField(6, $event)"
+                  />
+                  <label for="fechaNacimiento">Fecha de nacimiento</label>
+                  <input
+                    *ngIf="campos[6].mostrar"
+                    type="date"
+                    id="date"
+                    class="form-control"
+                    formControlName="date"
+                    placeholder="Ingresa tu fecha de nacimiento"
+                  />
+                  <div *ngIf="isFieldInvalid('fechaNacimiento')" class="error-message">
+                    <span *ngIf="form.get('fechaNacimiento')?.errors?.['required']">Obligatorio</span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <input 
+                    type="checkbox"
+                    [checked]="campos[7].mostrar" 
+                    (change)="toggleField(7, $event)"
+                  />
+                  <label for="genero">Género</label>
+                  <input
+                    *ngIf="campos[7].mostrar"
+                    type="text"
+                    id="genero"
+                    class="form-control"
+                    formControlName="genero"
+                    placeholder="Ingresa tu genero"
+                  />
+                  <div *ngIf="isFieldInvalid('genero')" class="error-message">Obligatorio</div>
+                </div>
+              </div>
+
+                  <!-- Form para departamento y ciudad -->
+                  <div class="form-row mt-3">
+                    <div class="col-md-6">
+                      <input 
+                        type="checkbox"
+                        [checked]="campos[8].mostrar" 
+                        (change)="toggleField(8, $event)"
+                      />
+                      <label for="departamento">Departamento</label>
+                      <input
+                        *ngIf="campos[8].mostrar"
+                        type="text"
+                        id="departamento"
+                        class="form-control"
+                        formControlName="departamento"
+                        placeholder="Ingresa tu departamento"
+                      />
+                      <div *ngIf="isFieldInvalid('departamento')" class="error-message">
+                        <span *ngIf="form.get('departamento')?.errors?.['required']">Obligatorio</span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <input 
+                        type="checkbox"
+                        [checked]="campos[9].mostrar" 
+                        (change)="toggleField(9, $event)"
+                      />
+                      <label for="genero">Ciudad</label>
+                      <input
+                        *ngIf="campos[9].mostrar"
+                        type="text"
+                        id="ciudad"
+                        class="form-control"
+                        formControlName="ciudad"
+                        placeholder="Ingresa tu ciudad"
+                      />
+                      <div *ngIf="isFieldInvalid('ciudad')" class="error-message">Obligatorio</div>
+                    </div>
+                  </div>
+
+           <!-- Form para barrio y direccion -->
+           <div class="form-row mt-3">
+            <div class="col-md-6">
+              <input 
+                type="checkbox"
+                [checked]="campos[10].mostrar" 
+                (change)="toggleField(10, $event)"
+              />
+              <label for="barrio">Barrio</label>
+              <input
+                *ngIf="campos[10].mostrar"
+                type="text"
+                id="barrio"
+                class="form-control"
+                formControlName="barrio"
+                placeholder="Ingresa tu barrio"
+              />
+              <div *ngIf="isFieldInvalid('barrio')" class="error-message">
+                <span *ngIf="form.get('barrio')?.errors?.['required']">Obligatorio</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <input 
+                type="checkbox"
+                [checked]="campos[11].mostrar" 
+                (change)="toggleField(11, $event)"
+              />
+              <label for="direccion">Dirección</label>
+              <input
+                *ngIf="campos[11].mostrar"
+                type="text"
+                id="direccion"
+                class="form-control"
+                formControlName="direccion"
+                placeholder="Ingresa tu direccion"
+              />
+              <div *ngIf="isFieldInvalid('direccion')" class="error-message">Obligatorio</div>
+            </div>
           </div>
 
-          <div class="footer">
-            <textarea class="form-control" [value]="legalText" (input)="onContentChange($event, 'legalText')"></textarea>
+          
+
+    
+
+          <!-- Texto legal -->
+          <div class="footer mt-5">
+            <label for="legalText">Texto legal</label>
+            <textarea
+              id="legalText"
+              class="form-control mb-3"
+              formControlName="legalText"
+              placeholder="Texto legal"
+            ></textarea>
           </div>
 
-          <!-- <div class="checkbox-row">
-            <input type="checkbox" id="accept" />
-            <label class="form-check-label" for="accept" [innerHTML]="checkboxText"></label>
-          </div> -->
+          <div class="btn-row">
+            <button
+              class="btn btn-primary btn-vista-previa"
+              type="button"
+              (click)="navigate()"
+            >
+              Vista previa
+            </button>
+          </div>
+          
+          <div class="btn-container">
+            <button
+              class="btn btn-primary btn-block btn-guardar"
+              type="button"
+              (click)="onSaveAndEdit($event)"
+            >
+              Guardar Cambios
+            </button>
+          </div>
 
-          <!-- <button type="submit" class="btn btn-dark">SUSCRIBIRME</button>
-          <a href="#" class="cancel-link">No, gracias</a> -->
-        </form>
-
-        <button (click)="saveChanges()" class="btn btn-primary">Guardar Cambios</button>
+         
+        </div>
       </div>
     </div>
   </div>
-</div>
+</form>
+
+<!-- <app-vista-plantilla-1 *ngIf="showVistaPlantilla" [datosVistaPlantilla]="datosVistaPlantilla"></app-vista-plantilla-1> -->

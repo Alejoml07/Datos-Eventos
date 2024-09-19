@@ -46,7 +46,7 @@ export class NavService {
 		{
 			title: 'Eventos', icon: 'home', type: 'sub', active: false, children: [
 				{ path: '/datos/carga-masiva', title: 'Carga Masiva', type: 'link' ,badgeType: 'primary' },
-				// { path: '/pagina/gestor-contenido', title: 'Gestor de contenido', type: 'link' },
+				{ path: '/pagina/gestor-contenido', title: 'Gestor de contenido', type: 'link' },
 				// { path: '/vistas/plantilla-1', title: 'Platilla 1', type: 'link' },
 
 

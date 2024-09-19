@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { GestorContenidoRoutingModule } from './gestor-contenido-routing.module';
 import { GestorPaginaComponent } from './gestor-pagina/gestor-pagina.component';
 import { VistasPaginaModule } from '../vistas-pagina/vistas-pagina.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,7 +15,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     GestorContenidoRoutingModule,
     VistasPaginaModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class GestorContenidoModule { }

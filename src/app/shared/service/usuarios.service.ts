@@ -15,55 +15,74 @@ export class UsuariosService extends CoreService  {
     super(http);
 }
 
-getData() {
-    return this.get<Usuario[]>('/Usuario/GetUsuarios');
-}
+// getData() {
+//     return this.get<Usuario[]>('/Usuario/GetUsuarios');
+// }
 
-getUser(id: string){
-    console.log('peticion', id);
-    return this.get(`/Usuario/GetUsuario/${id}`);
+// getUser(id: string){
+//     console.log('peticion', id);
+//     return this.get(`/Usuario/GetUsuario/${id}`);
 
-    //return this.post<Producto[]>('/get-product', id);
-}
+//     //return this.post<Producto[]>('/get-product', id);
+// }
 
-usuarioNuevo(user: any[]){
-    return this.post<Response>('/Usuario/Usuarios', user);
-}
+// usuarioNuevo(user: any[]){
+//     return this.post<Response>('/Usuario/Usuarios', user);
+// }
 
 registroNuevo(data: any[]){
     return this.http.post<any>('https://srvextranet.leonisa.com/Aplicativos_Informaticos/CustomerCentric/api/ClientEvent/AddArrangeEvent', data);
 }
-
-excelData(jsonData: any[]) {
-    return this.post<Usuario[]>('/Usuario/LoadUsuarios', jsonData );
+registroNuevoUnitario(data: any){
+    return this.http.post<any>('https://srvextranet.leonisa.com/Aplicativos_Informaticos/CustomerCentric/api/ClientEvent/AddEvent', data);
 }
 
-deteleUser(id: any){
-    return this.delete<any>(`/Usuario/DeleteUsuario/${id}`);
+getBanner(tipoUsuario: any){
+    return this.post<any>('/Productos/GetBannerByEvent', tipoUsuario);
 }
 
-guardarPuntos(jsonData: any[]) {
-    return this.post<any>('/fidelizacion/LoadPuntosManuales', jsonData );
+updateBanner(jsonData: any){
+    return this.post<any>('/Productos/AddBannerEventos', jsonData);
 }
 
-extractos(datos: any) {
-    return this.post("/LoadExtractos", datos);
+updateData(jsonData: any) {
+    return this.post<any>('/fidelizacion/AddEventoContenido', jsonData);  
 }
 
-getPuntos() {
-    return this.get<Usuario[]>('/fidelizacion/GetPuntosManuales');
+sharedData(jsonData: any) {
+    return this.post<any>('/fidelizacion/GetEventoContenidoByEvento', jsonData);  
 }
 
-detelePunto(id: any){
-    return this.delete<any>(`/fidelizacion/DeletePuntoManual/${id}`);
-}
+// excelData(jsonData: any[]) {
+//     return this.post<Usuario[]>('/Usuario/LoadUsuarios', jsonData );
+// }
 
-detelePuntos(ids: any){
-    return this.post<any>(`/fidelizacion/DeletePuntoManuales`, ids);
-}
+// deteleUser(id: any){
+//     return this.delete<any>(`/Usuario/DeleteUsuario/${id}`);
+// }
 
-getMovimientos(cedula: any) {
-    return this.get<any[]>(`/GetExtractosByUsuario/${cedula}`);
-  }
+// guardarPuntos(jsonData: any[]) {
+//     return this.post<any>('/fidelizacion/LoadPuntosManuales', jsonData );
+// }
+
+// extractos(datos: any) {
+//     return this.post("/LoadExtractos", datos);
+// }
+
+// getPuntos() {
+//     return this.get<Usuario[]>('/fidelizacion/GetPuntosManuales');
+// }
+
+// detelePunto(id: any){
+//     return this.delete<any>(`/fidelizacion/DeletePuntoManual/${id}`);
+// }
+
+// detelePuntos(ids: any){
+//     return this.post<any>(`/fidelizacion/DeletePuntoManuales`, ids);
+// }
+
+// getMovimientos(cedula: any) {
+//     return this.get<any[]>(`/GetExtractosByUsuario/${cedula}`);
+//   }
 
 }

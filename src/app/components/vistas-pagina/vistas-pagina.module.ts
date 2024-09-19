@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { VistasPaginaRoutingModule } from './vistas-pagina-routing.module';
 import { VistaPlantilla1Component } from './vista-plantilla-1/vista-plantilla-1.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,7 +15,9 @@ import { VistaPlantilla1Component } from './vista-plantilla-1/vista-plantilla-1.
   ],
   imports: [
     CommonModule,
-    VistasPaginaRoutingModule
+    VistasPaginaRoutingModule,
+    ReactiveFormsModule
+
   ]
 })
 export class VistasPaginaModule { }

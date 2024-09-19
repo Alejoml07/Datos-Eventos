@@ -33,10 +33,53 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
+  gap: 20px; /* Agrega un espacio entre los dos inputs */
+
+}
+
+.btn-vista-previa {
+  float: left !important;
+  background-color: #34cafc !important;
+  color: white !important;
+  border-color: #34cafc !important;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-guardar {
+  background-color: #5a3ea1 !important; /* Purple color */
+  color: white !important;
+  width: 100%; /* Full width to match the container */
+}
+
+/* Additional styling to separate the buttons */
+.btn-row {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 20px; /* Space between Vista Previa and Guardar Cambios */
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center; /* Centra el botón horizontalmente */
+  margin-top: 20px; /* Ajusta este valor para controlar la separación vertical */
+}
+
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: normal; /* Mantener la estética de texto */
+  text-align: left;
 }
 
 .form-row input {
-  width: 48%;
+  width: 100%;
   padding: 10px;
   border: 1px solid #333;
   border-radius: 5px;
@@ -95,4 +138,46 @@
 .form-check-label {
   display: inline-block;
   margin-left: 10px;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center;     /* Centra verticalmente */
+  height: 100vh;           /* Ocupa toda la altura de la ventana */
+}
+
+.loader {
+  width: 96px;  /* Aumenta el ancho */
+  height: 96px; /* Aumenta la altura */
+  display: inline-block;
+  position: relative;
+}
+
+.loader::after,
+.loader::before {
+  content: '';  
+  box-sizing: border-box;
+  width: 96px;  /* Aumenta el ancho */
+  height: 96px; /* Aumenta la altura */
+  border-radius: 50%;
+  border: 4px solid #000000; /* Aumenta el grosor del borde */
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: animloader 2s linear infinite;
+}
+.loader::after {
+  animation-delay: 1s;
+}
+
+@keyframes animloader {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
 }

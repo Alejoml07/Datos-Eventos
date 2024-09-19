@@ -41,6 +41,7 @@ export class CargaMasivaCampanasComponent {
       correo3: '',
       fechaNacimiento: '',
       genero: '',
+      pais: '',
       departamento: '',
       ciudad: '',
       barrio: '',
@@ -78,33 +79,25 @@ export class CargaMasivaCampanasComponent {
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
 
-      let jsonData: any[] = XLSX.utils.sheet_to_json(worksheet, { raw: false, defval: "No registra" });
+      let jsonData: any[] = XLSX.utils.sheet_to_json(worksheet, { raw: false, defval: "" });
       jsonData = jsonData.filter((_, index) => index !== 0);
 
       console.log('jsonData', jsonData);
 
       if (Array.isArray(jsonData)) {
-        jsonData = jsonData.filter((element) => (element.cedula !== '' && 
+        jsonData = jsonData.filter((element) => (
+        element.cedula !== '' && 
         element.nombres !== '' &&
         element.apellidos !== '' &&
         element.celular1 !== '' && 
         element.nombreEvento !== '' &&
         element.fechaEvento !== '' &&
         element.autorizaDatos !== '' &&
-        element.genero !== '') && 
-        (element.cedula !== 'No registra' && 
-        element.nombres !== 'No registra' && 
-        element.apellidos !== 'No registra' && 
-        element.celular1 !== 'No registra' && 
-        element.nombreEvento !== 'No registra' &&
-        element.fechaEvento !== 'No registra' &&
-        element.autorizaDatos !== 'No registra' &&
-        element.genero !== 'No registra'));
+        element.genero !== '' ));
+
         console.log('Estructura: ', jsonData);
 
-        const expectedFields = [
-          'cedula', 'nombres', 'apellidos', 'celular1', 
-          'correo1', 'fechaNacimiento', 'genero','nombreEvento','fechaEvento','autorizaDatos'];
+        const expectedFields = ['cedula' ];
         this.hasExpectedStructure = true;
         this.mensaje = '';
 
@@ -157,49 +150,57 @@ export class CargaMasivaCampanasComponent {
         this.mensajeError += ` Autoriza el uso de datos personales `;
         this.contador++;
       }
-      if (!numeros.test(elemento.cedula)) {
-        this.mensajeError += ` Cédula `;
-        console.log('elemento.cedula', elemento.cedula);
+      if (elemento.cedula && (typeof elemento.cedula !== 'string' || elemento.cedula.length > 300)) {
+        this.mensajeError += ' Cédula ';
         this.contador++;
       }
-      if (!numeros.test(elemento.celular1)) {
-        this.mensajeError += ` Celular 1 `;
-        console.log('elemento.celular1', elemento.celular1);
-        this.contador++;
-      }
-      if (!correoRegex.test(elemento.correo1)) {
-        this.mensajeError += ` Correo 1 `;
-        console.log('elemento.correo1', elemento.correo1);
-        this.contador++;
-      }
-      if (elemento.empresa && (typeof elemento.empresa !== 'string' || elemento.empresa.length > 300)) {
-        this.mensajeError += ' Empresa ';
-        this.contador++;
-      }
-      if (elemento.ciudad && (typeof elemento.ciudad !== 'string' || elemento.ciudad.length > 300)) {
-        this.mensajeError += ' Ciudad ';
-        this.contador++;
-      }
-      if (elemento.departamento && (typeof elemento.departamento !== 'string' || elemento.departamento.length > 300)) {
-        this.mensajeError += ' Departamento ';
-        this.contador++;
-      }
-      if (elemento.nombreEvento && (typeof elemento.nombreEvento !== 'string' || elemento.nombreEvento.length > 300)) {
-        this.mensajeError += ' nombreEvento ';
-        this.contador++;
-      }
-      if (elemento.genero && (typeof elemento.genero !== 'string' || elemento.genero.length > 300)) {
-        this.mensajeError += ' Género ';
-        this.contador++;
-      }
-      if (elemento.nombres && (typeof elemento.nombres !== 'string' || elemento.nombres.length > 300)) {
-        this.mensajeError += ' Nombres ';
-        this.contador++;
-      }
-      if (elemento.apellidos && (typeof elemento.apellidos !== 'string' || elemento.apellidos.length > 300)) {
-        this.mensajeError += ' Apellidos ';
-        this.contador++;
-      }
+      // if (!numeros.test(elemento.cedula)) {
+      //   this.mensajeError += ` Cédula `;
+      //   console.log('elemento.cedula', elemento.cedula);
+      //   this.contador++;
+      // }
+      // if (!numeros.test(elemento.celular1)) {
+      //   this.mensajeError += ` Celular 1 `;
+      //   console.log('elemento.celular1', elemento.celular1);
+      //   this.contador++;
+      // }
+      // if (!correoRegex.test(elemento.correo1)) {
+      //   this.mensajeError += ` Correo 1 `;
+      //   console.log('elemento.correo1', elemento.correo1);
+      //   this.contador++;
+      // }
+      // if (elemento.empresa && (typeof elemento.empresa !== 'string' || elemento.empresa.length > 300)) {
+      //   this.mensajeError += ' Empresa ';
+      //   this.contador++;
+      // }
+      // if (elemento.ciudad && (typeof elemento.ciudad !== 'string' || elemento.ciudad.length > 300)) {
+      //   this.mensajeError += ' Ciudad ';
+      //   this.contador++;
+      // }
+      // if (elemento.pais && (typeof elemento.pais !== 'string' || elemento.pais.length > 300)) {
+      //   this.mensajeError += ' País ';
+      //   this.contador++;
+      // }
+      // if (elemento.departamento && (typeof elemento.departamento !== 'string' || elemento.departamento.length > 300)) {
+      //   this.mensajeError += ' Departamento ';
+      //   this.contador++;
+      // }
+      // if (elemento.nombreEvento && (typeof elemento.nombreEvento !== 'string' || elemento.nombreEvento.length > 300)) {
+      //   this.mensajeError += ' nombreEvento ';
+      //   this.contador++;
+      // }
+      // if (elemento.genero && (typeof elemento.genero !== 'string' || elemento.genero.length > 300)) {
+      //   this.mensajeError += ' Género ';
+      //   this.contador++;
+      // }
+      // if (elemento.nombres && (typeof elemento.nombres !== 'string' || elemento.nombres.length > 300)) {
+      //   this.mensajeError += ' Nombres ';
+      //   this.contador++;
+      // }
+      // if (elemento.apellidos && (typeof elemento.apellidos !== 'string' || elemento.apellidos.length > 300)) {
+      //   this.mensajeError += ' Apellidos ';
+      //   this.contador++;
+      // }
   
       elemento.mensaje = this.mensajeError;
   
@@ -216,7 +217,7 @@ export class CargaMasivaCampanasComponent {
 
 
   downloadExcel(): void {
-    window.open("https://stgactincentivos.blob.core.windows.net/$web/FormatoBDEventos.xlsx?sp=r&st=2024-08-22T16:18:32Z&se=2030-08-23T00:18:32Z&sv=2022-11-02&sr=b&sig=ZWkfOSzwTEA4GpFNF9XYBCZl54P7oQ9eDTC3l3QGc0I%3D", "_blank");
+    window.open("https://stgactincentivos.blob.core.windows.net/$web/FormatoBDEventos%20(3).xlsx?sp=r&st=2024-09-18T18:46:22Z&se=2030-09-19T02:46:22Z&sv=2022-11-02&sr=b&sig=0x6AnpXNc6sa%2FpGwMHR9ddyERBz95pme%2FY%2FGyR7vF1M%3D", "_blank");
   }
 
   convertToJSON() {
@@ -231,27 +232,19 @@ export class CargaMasivaCampanasComponent {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
   
-        let jsonData: any[] = XLSX.utils.sheet_to_json(worksheet, { raw: false, defval: "No registra" });
+        let jsonData: any[] = XLSX.utils.sheet_to_json(worksheet, { raw: false, defval: "" });
         jsonData = jsonData.filter((_, index) => index !== 0);
   
         if (Array.isArray(jsonData)) {
-          jsonData = jsonData.filter((element) => 
-            element.cedula !== '' && 
+          jsonData = jsonData.filter((element) =>
+            element.cedula !== '' &&
             element.nombres !== '' &&
             element.apellidos !== '' &&
-            element.celular1 !== '' && 
+            element.celular1 !== '' &&
             element.genero !== '' &&
             element.nombreEvento !== '' &&
             element.fechaEvento !== '' &&
-            element.autorizaDatos !== '' &&
-            element.cedula !== 'No registra' && 
-            element.nombres !== 'No registra' && 
-            element.apellidos !== 'No registra' && 
-            element.celular1 !== 'No registra' && 
-            element.nombreEvento !== 'No registra' &&
-            element.fechaEvento !== 'No registra' &&
-            element.autorizaDatos !== 'No registra' &&
-            element.genero !== 'No registra'
+            element.autorizaDatos !== ''
           );
   
           if (jsonData.length > 0) {
@@ -259,14 +252,12 @@ export class CargaMasivaCampanasComponent {
             this.productos = this.jsonCorrect;
             this.productosError = this.jsonErrores;
   
-            // Si se encuentran errores
             if (this.jsonErrores.length > 0) {
               this.progreso = 'Error';
               this.error = true;
               this.estado = false;
             }
   
-            // Iterar sobre jsonCorrect en lugar de jsonData
             this.nuevoJson = this.jsonCorrect.map((elemento) => ({
               pais: "169",
               cedula: elemento.cedula,
@@ -275,57 +266,90 @@ export class CargaMasivaCampanasComponent {
               telefono1: elemento.telefono1 || "No registra",
               celular1: elemento.celular1,
               correo1: elemento.correo1 || "No registra",
-              fechaNacimiento: this.transformDate(elemento.fechaNacimiento), // Función para transformar fecha
+              fechaNacimiento: this.transformDate(elemento.fechaNacimiento),
               genero: elemento.genero,
               departamento: elemento.departamento,
               ciudad: elemento.ciudad,
               barrio: elemento.barrio || "No registra",
               direccion: elemento.direccion || "No registra",
               nombreEvento: elemento.nombreEvento || "No registra",
-              fechaEvento: this.transformDate(elemento.fechaEvento)|| "No registra",
-              ciudadEvento: "", 
+              fechaEvento: this.transformDate(elemento.fechaEvento) || "No registra",
+              ciudadEvento: "",
               autorizaUsoDatosPersonales: elemento.autorizaDatos === "Si" ? true : false
             }));
-            console.log('datos para la api', JSON.stringify(this.jsonCorrect));
-            console.log('datos para la api', JSON.stringify(this.nuevoJson));
-          }
-
-           this.usuariosService.registroNuevo(this.nuevoJson).subscribe({
-            next: (response) => {
-              if (response) {
-                this.registrado = true;
-                this.progreso = '';
-                this.estado = true;
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Registrados',
-                  text: 'Todos los registros guardados exitosamente.'
-                });
-              } else {
-                this.error = true;
-                this.progreso = '';
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error en Registro',
-                  text: 'Ocurrió un error al registrar.'
-                });
+  
+            const lotes = this.dividirEnLotes(this.nuevoJson, 2000);
+  
+            // Iniciar la barra de progreso con SweetAlert2
+            let totalLotes = lotes.length;
+            let loteProcesado = 0;
+  
+            Swal.fire({
+              title: 'Registrando datos',
+              html: 'Procesando los datos <b>0%</b>',
+              allowOutsideClick: false,  // Evitar cierre al hacer clic fuera
+              showConfirmButton: false,  // No mostrar botón de confirmación
+              showCancelButton: false,   // No mostrar botón de cancelación
+              timerProgressBar: true,    // Mostrar barra de progreso
+              didOpen: () => {
+                Swal.showLoading();
               }
-            },
-            error: (error) => {
-              console.error(error);
-              this.progreso = '';
-              Swal.fire({
-                icon: 'error',
-                title: 'Error en Registro',
-                text: 'Ocurrió un error al registrar los usuarios.'
-              });
-            }
-          });
-
+            });
+  
+            this.procesarLotes(lotes, loteProcesado, totalLotes);
+          }
         }
       };
   
       fileReader.readAsArrayBuffer(this.file);
+    }
+  }
+  
+  dividirEnLotes(array: any[], tamanioLote: number): any[][] {
+    const lotes = [];
+    for (let i = 0; i < array.length; i += tamanioLote) {
+      lotes.push(array.slice(i, i + tamanioLote));
+    }
+    return lotes;
+  }
+  
+  procesarLotes(lotes: any[][], loteProcesado: number, totalLotes: number) {
+    if (loteProcesado < totalLotes) {
+      this.usuariosService.registroNuevo(lotes[loteProcesado]).subscribe({
+        next: (response) => {
+          loteProcesado++;
+          const porcentajeProgreso = Math.round((loteProcesado / totalLotes) * 100);
+  
+          Swal.update({
+            html: `Procesando los datos <b>${porcentajeProgreso}%</b>`
+          });
+  
+          // Llamada recursiva para procesar el siguiente lote
+          this.procesarLotes(lotes, loteProcesado, totalLotes);
+        },
+        error: (error) => {
+          console.error(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error en Registro',
+            text: `Error en el lote ${loteProcesado + 1}.`
+          });
+        },
+        complete: () => {
+          if (loteProcesado === totalLotes) {
+            this.registrado = true;
+            this.progreso = '';
+            this.estado = true;
+            Swal.fire({
+              icon: 'success',
+              title: 'Registro completo',
+              text: 'Todos los lotes han sido procesados correctamente.',
+              allowOutsideClick: true, // Permitir cierre una vez que el proceso haya terminado
+              showConfirmButton: true  // Mostrar botón de confirmación al finalizar
+            });
+          }
+        }
+      });
     }
   }
 
@@ -338,7 +362,7 @@ export class CargaMasivaCampanasComponent {
       const anio = partes[2].length === 2 ? '20' + partes[2] : partes[2];
       return `${anio}-${mes}-${dia}T00:00:00`;
     }
-    return "No registra";
+    return "";
   }
   
 
