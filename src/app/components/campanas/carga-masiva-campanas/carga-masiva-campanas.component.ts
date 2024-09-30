@@ -218,7 +218,7 @@ export class CargaMasivaCampanasComponent {
 
 
   downloadExcel(): void {
-    window.open("https://stgactincentivos.blob.core.windows.net/$web/FormatoBDEventos%20(3).xlsx?sp=r&st=2024-09-18T18:46:22Z&se=2030-09-19T02:46:22Z&sv=2022-11-02&sr=b&sig=0x6AnpXNc6sa%2FpGwMHR9ddyERBz95pme%2FY%2FGyR7vF1M%3D", "_blank");
+    window.open("https://stgactincentivos.blob.core.windows.net/$web/FormatoBDEventos_1.xlsx?sp=r&st=2024-09-30T20:58:15Z&se=2030-10-01T04:58:15Z&sv=2022-11-02&sr=b&sig=4lxX%2FdHHHBS0AmY2bZ1jcMC7WrI7uhyEcErrl%2F%2BfCso%3D", "_blank");
   }
 
   convertToJSON() {
