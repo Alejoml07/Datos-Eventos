@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CoreService } from '../core.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Usuario } from '../interfaces/usuarios';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -15,20 +16,19 @@ export class UsuariosService extends CoreService  {
     super(http);
 }
 
-// getData() {
-//     return this.get<Usuario[]>('/Usuario/GetUsuarios');
-// }
+private apiUrl = 'https://srvappswebleo.leonisa.com/Aplicativos_Informaticos/mailservice/api/v1/Mail/send';
 
-// getUser(id: string){
-//     console.log('peticion', id);
-//     return this.get(`/Usuario/GetUsuario/${id}`);
+sendMail(mailData: any, file: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('mailData', JSON.stringify(mailData));
+    formData.append('formFiles', file);
 
-//     //return this.post<Producto[]>('/get-product', id);
-// }
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+    });
 
-// usuarioNuevo(user: any[]){
-//     return this.post<Response>('/Usuario/Usuarios', user);
-// }
+    return this.http.post(this.apiUrl, formData, { headers });
+  }
 
 registroNuevo(data: any[]){
     return this.http.post<any>('https://srvextranet.leonisa.com/Aplicativos_Informaticos/CustomerCentric/api/ClientEvent/AddArrangeEvent', data);
@@ -53,36 +53,7 @@ sharedData(jsonData: any) {
     return this.post<any>('/fidelizacion/GetEventoContenidoByEvento', jsonData);  
 }
 
-// excelData(jsonData: any[]) {
-//     return this.post<Usuario[]>('/Usuario/LoadUsuarios', jsonData );
-// }
 
-// deteleUser(id: any){
-//     return this.delete<any>(`/Usuario/DeleteUsuario/${id}`);
-// }
 
-// guardarPuntos(jsonData: any[]) {
-//     return this.post<any>('/fidelizacion/LoadPuntosManuales', jsonData );
-// }
-
-// extractos(datos: any) {
-//     return this.post("/LoadExtractos", datos);
-// }
-
-// getPuntos() {
-//     return this.get<Usuario[]>('/fidelizacion/GetPuntosManuales');
-// }
-
-// detelePunto(id: any){
-//     return this.delete<any>(`/fidelizacion/DeletePuntoManual/${id}`);
-// }
-
-// detelePuntos(ids: any){
-//     return this.post<any>(`/fidelizacion/DeletePuntoManuales`, ids);
-// }
-
-// getMovimientos(cedula: any) {
-//     return this.get<any[]>(`/GetExtractosByUsuario/${cedula}`);
-//   }
 
 }

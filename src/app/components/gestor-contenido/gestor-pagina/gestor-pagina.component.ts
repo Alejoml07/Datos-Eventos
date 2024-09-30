@@ -28,21 +28,23 @@ export class GestorPaginaComponent {
     };
   message: string;
   isLoading = true;
+  selectedFile: File | null = null;
+  fileData: string;
 
 
   campos = [
-    { nombre: 'nombre', mostrar: true, placeholder: 'Ingresa el nombre', title: 'Nombre', tipo: 'text' },
-    { nombre: 'apellidos', mostrar: true, placeholder: 'Ingresa el apellido', title: 'Apellidos', tipo: 'text' },
-    { nombre: 'cedula', mostrar: true, placeholder: 'Ingresa la cédula', title: 'Cédula', tipo: 'text' },
-    { nombre: 'celular', mostrar: true, placeholder: 'Ingresa el celular', title: 'Celular', tipo: 'text' },
-    { nombre: 'email', mostrar: true, placeholder: 'Ingresa el correo', title: 'Correo electrónico', tipo: 'text' },
-    { nombre: 'pais', mostrar: true, placeholder: 'Ingresa el país', title: 'País', tipo: 'text' },
+    { nombre: 'nombre', mostrar: true, placeholder: 'Ingresa tu nombre', title: 'Nombre', tipo: 'text' },
+    { nombre: 'apellidos', mostrar: true, placeholder: 'Ingresa tu apellido', title: 'Apellidos', tipo: 'text' },
+    { nombre: 'cedula', mostrar: true, placeholder: 'Ingresa tu cédula', title: 'Cédula', tipo: 'text' },
+    { nombre: 'celular', mostrar: true, placeholder: 'Ingresa tu celular', title: 'Celular', tipo: 'text' },
+    { nombre: 'email', mostrar: true, placeholder: 'Ingresa tu correo', title: 'Correo electrónico', tipo: 'text' },
+    { nombre: 'pais', mostrar: true, placeholder: 'Ingresa tu país', title: 'País', tipo: 'text' },
     { nombre: 'fechaNacimiento', mostrar: true, placeholder: 'Selecciona la fecha del evento', title: 'Fecha de nacimiento', tipo: 'date' },
-    { nombre: 'genero', mostrar: true, placeholder: 'Ingresa el género', title: 'Género', tipo: 'text' },
-    { nombre: 'departamento', mostrar: true, placeholder: 'Ingresa el departamento', title: 'Departamento', tipo: 'text' },
-    { nombre: 'ciudad', mostrar: true, placeholder: 'Ingresa el ciudad', title: 'Ciudad', tipo: 'text' },
-    { nombre: 'barrio', mostrar: true, placeholder: 'Ingresa el barrio', title: 'Barrio', tipo: 'text' },
-    { nombre: 'direccion', mostrar: true, placeholder: 'Ingresa el dirección', title: 'Dirección', tipo: 'text' },
+    { nombre: 'genero', mostrar: true, placeholder: 'Ingresa tu género', title: 'Género', tipo: 'text' },
+    { nombre: 'departamento', mostrar: true, placeholder: 'Ingresa tu departamento', title: 'Departamento', tipo: 'text' },
+    { nombre: 'ciudad', mostrar: true, placeholder: 'Ingresa tu ciudad', title: 'Ciudad', tipo: 'text' },
+    { nombre: 'barrio', mostrar: true, placeholder: 'Ingresa tu barrio', title: 'Barrio', tipo: 'text' },
+    { nombre: 'direccion', mostrar: true, placeholder: 'Ingresa tu dirección', title: 'Dirección', tipo: 'text' },
 
   ];
 
@@ -84,6 +86,19 @@ export class GestorPaginaComponent {
     this.cargarContenido();
    
     this.cargarImagenes();
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    console.log(this.selectedFile);
+  
+    // Convertir el archivo a base64 para almacenarlo en localStorage
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.fileData = reader.result as string;
+      localStorage.setItem('selectedFile', this.fileData);  // Almacenar el archivo en base64
+    };
+    reader.readAsDataURL(this.selectedFile);  // Leer el archivo como base64
   }
 
   onContentChange(field: string) {
@@ -184,8 +199,10 @@ export class GestorPaginaComponent {
   
     // Combina los valores del formulario y los campos en un solo objeto
     const dataToSend = {
-      ...this.form.value,   // valores del formulario
-      campos: this.campos   // valores de los campos
+      ...this.form.value, 
+      selectedFile: this.fileData,  // valores del formulario
+      campos: this.campos,
+         // valores de los campos
     };
   
     this.isEditable = false;
@@ -337,4 +354,7 @@ export class GestorPaginaComponent {
     this.saveChanges(); 
 
   }
+
+
+
 }

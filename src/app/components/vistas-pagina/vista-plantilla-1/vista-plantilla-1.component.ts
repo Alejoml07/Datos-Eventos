@@ -42,18 +42,18 @@ export class VistaPlantilla1Component {
   mostrarPais = true;
 
   campos = [
-    { nombre: 'nombre', mostrar: true, placeholder: 'Ingresa el nombre', title: 'Nombre', tipo: 'text' },
-    { nombre: 'apellidos', mostrar: true, placeholder: 'Ingresa el apellido', title: 'Apellidos', tipo: 'text' },
-    { nombre: 'cedula', mostrar: true, placeholder: 'Ingresa la cédula', title: 'Cédula', tipo: 'text' },
-    { nombre: 'celular', mostrar: true, placeholder: 'Ingresa el celular', title: 'Celular', tipo: 'text' },
-    { nombre: 'email', mostrar: true, placeholder: 'Ingresa el correo', title: 'Correo electrónico', tipo: 'text' },
-    { nombre: 'pais', mostrar: true, placeholder: 'Ingresa el país', title: 'País', tipo: 'text' },
+    { nombre: 'nombre', mostrar: true, placeholder: 'Ingresa tu nombre', title: 'Nombre', tipo: 'text' },
+    { nombre: 'apellidos', mostrar: true, placeholder: 'Ingresa tu apellido', title: 'Apellidos', tipo: 'text' },
+    { nombre: 'cedula', mostrar: true, placeholder: 'Ingresa tu cédula', title: 'Cédula', tipo: 'text' },
+    { nombre: 'celular', mostrar: true, placeholder: 'Ingresa tu celular', title: 'Celular', tipo: 'text' },
+    { nombre: 'email', mostrar: true, placeholder: 'Ingresa tu correo', title: 'Correo electrónico', tipo: 'text' },
+    { nombre: 'pais', mostrar: true, placeholder: 'Ingresa tu país', title: 'País', tipo: 'text' },
     { nombre: 'fechaNacimiento', mostrar: true, placeholder: 'Selecciona la fecha del evento', title: 'Fecha de nacimiento', tipo: 'date' },
-    { nombre: 'genero', mostrar: true, placeholder: 'Ingresa el género', title: 'Género', tipo: 'text' },
-    { nombre: 'departamento', mostrar: true, placeholder: 'Ingresa el departamento', title: 'Departamento', tipo: 'text' },
-    { nombre: 'ciudad', mostrar: false, placeholder: 'Ingresa el ciudad', title: 'Ciudad', tipo: 'text' },
-    { nombre: 'barrio', mostrar: false, placeholder: 'Ingresa el barrio', title: 'Barrio', tipo: 'text' },
-    { nombre: 'direccion', mostrar: false, placeholder: 'Ingresa el dirección', title: 'Dirección', tipo: 'text' },
+    { nombre: 'genero', mostrar: true, placeholder: 'Ingresa tu género', title: 'Género', tipo: 'text' },
+    { nombre: 'departamento', mostrar: true, placeholder: 'Ingresa tu departamento', title: 'Departamento', tipo: 'text' },
+    { nombre: 'ciudad', mostrar: true, placeholder: 'Ingresa tu ciudad', title: 'Ciudad', tipo: 'text' },
+    { nombre: 'barrio', mostrar: true, placeholder: 'Ingresa tu barrio', title: 'Barrio', tipo: 'text' },
+    { nombre: 'direccion', mostrar: true, placeholder: 'Ingresa tu dirección', title: 'Dirección', tipo: 'text' },
 
   ];
 
@@ -76,6 +76,19 @@ export class VistaPlantilla1Component {
     ciudadEvento: string; 
     autorizaUsoDatosPersonales: boolean;
   };
+
+  mailData = {
+    to: 'alejandromunozlezcano@gmail.com',  // Correo del destinatario
+    subject: 'Prueba correo',  // Asunto del correo
+    message: 'Pureba correo',  // Cuerpo del correo
+    cc: '',  // Opcional, con copia
+    bcc: '',  // Opcional, con copia oculta
+    from: 'notificacionespos@glingeriesas.com',  
+    senderName: 'Notificaciones POS',  // Nombre del remitente
+    isBodyHtml: false  // Definir si el cuerpo del correo es HTML o texto plano
+  };
+
+  selectedFile: string;
 
   constructor(private fb: FormBuilder, private storageService: StorageService, private usuariosService: UsuariosService) {
     this.form = this.fb.group({
@@ -141,12 +154,15 @@ export class VistaPlantilla1Component {
         this.eventDate = result.eventDate;
         this.checkboxText = result.checkboxText;
         this.legalText = result.legalText;
+        this.selectedFile = result.selectedFile
       } else {
         console.error('Error:', response.message);
       }
     });
     this.cargarImagenes();
   }
+
+  
 
   onSubmit(): void {
     console.log('Formulario enviado', this.form.value)
@@ -274,5 +290,52 @@ export class VistaPlantilla1Component {
         });
       }
     });
+  }
+
+
+  // onFileSelected(event: any) {
+  //   this.selectedFile = event.target.files[0];
+  //   console.log(this.selectedFile);
+  
+  //   // Convertir el archivo a base64 para almacenarlo en localStorage
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     const fileData = reader.result as string;
+  //     localStorage.setItem('selectedFile', fileData);  // Almacenar el archivo en base64
+  //   };
+  //   reader.readAsDataURL(this.selectedFile);  // Leer el archivo como base64
+  // }
+
+
+  sendMail() {
+    const storedFile = this.selectedFile;
+    if (!storedFile) {
+      Swal.fire('Error', 'Por favor seleccione un archivo', 'error');
+      return;
+    }
+  
+    // Reconstruir el archivo desde base64
+    const byteString = atob(storedFile.split(',')[1]);
+    const mimeString = storedFile.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+  
+    // Aquí puedes especificar un nombre para el archivo
+    const fileName = 'archivo_reconstruido.pdf'; // Cambia la extensión según tu archivo
+    const reconstructedFile = new File([ab], fileName, { type: mimeString });
+    console.log('reconstructedFile',reconstructedFile)
+  
+    // Enviar el correo con el archivo reconstruido
+    this.usuariosService.sendMail(this.mailData, reconstructedFile).subscribe(
+      (response) => {
+        Swal.fire('Éxito', 'Correo enviado con éxito', 'success');
+      },
+      (error) => {
+        Swal.fire('Error', 'Hubo un problema al enviar el correo', 'error');
+      }
+    );
   }
 }

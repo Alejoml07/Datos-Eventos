@@ -2,36 +2,58 @@
   <span class="loader"></span>
 </div>
 
+
+
 <form *ngIf="!isLoading" [formGroup]="form">
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card tab2-card">
+          <div class="card-body tab2-card">
+            <div class="container-fluid">
+              <!-- Ajuste del padding aquí -->
+              <div class="row justify-content-center align-items-center"> 
+                <div class="col text-center">
+                 <!-- Inputs paralelos para Nombre y Fecha del Evento -->
+                  <div class="form-row">
+                    <div class="col-md-6">
+                      <label for="nombreEvento">Nombre del evento</label>
+                      <input
+                        type="text"
+                        id="nombreEvento"
+                        class="form-control"
+                        formControlName="nombreEvento"
+                        (input)="onContentChange('eventName')"
+                        placeholder="Nombre del evento"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="fechaEvento">Fecha del evento</label>
+                      <input
+                        type="date"
+                        id="fechaEvento"
+                        class="form-control"
+                        formControlName="fechaEvento"
+                        (input)="onContentChange('eventDate')"
+                        placeholder="Fecha del evento"
+                      />
+                    </div>
+                  </div>                  <!-- <button class="btn btn-secondary" (click)="obtenerDatosYExportarExcel()">Descargar Reporte</button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="container-fluid">
     <div class="card theme-card">
       <div class="card-body">
         <div class="container">
-          <!-- Inputs paralelos para Nombre y Fecha del Evento -->
-          <div class="form-row">
-            <div class="col-md-6">
-              <label for="nombreEvento">Nombre del evento</label>
-              <input
-                type="text"
-                id="nombreEvento"
-                class="form-control"
-                formControlName="nombreEvento"
-                (input)="onContentChange('eventName')"
-                placeholder="Nombre del evento"
-              />
-            </div>
-            <div class="col-md-6">
-              <label for="fechaEvento">Fecha del evento</label>
-              <input
-                type="date"
-                id="fechaEvento"
-                class="form-control"
-                formControlName="fechaEvento"
-                (input)="onContentChange('eventDate')"
-                placeholder="Fecha del evento"
-              />
-            </div>
-          </div>
+          
           <!-- Título de la página -->
           <div class="header">
             <label for="pageTitle">Título de la página</label>
@@ -381,6 +403,11 @@
               placeholder="Texto legal"
             ></textarea>
           </div>
+
+          <div class="form-group">
+            <label>Archivo adjunto:</label>
+            <input type="file" (change)="onFileSelected($event)" />
+          </div> 
 
           <div class="btn-row">
             <button

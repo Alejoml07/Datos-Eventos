@@ -86,14 +86,15 @@ export class CargaMasivaCampanasComponent {
 
       if (Array.isArray(jsonData)) {
         jsonData = jsonData.filter((element) => (
-        element.cedula !== '' && 
-        element.nombres !== '' &&
-        element.apellidos !== '' &&
-        element.celular1 !== '' && 
-        element.nombreEvento !== '' &&
-        element.fechaEvento !== '' &&
-        element.autorizaDatos !== '' &&
-        element.genero !== '' ));
+        element.cedula !== ''
+        // element.nombres !== '' &&
+        // element.apellidos !== '' &&
+        // element.celular1 !== '' && 
+        // element.nombreEvento !== '' &&
+        // element.fechaEvento !== '' &&
+        // element.autorizaDatos !== '' &&
+        // element.genero !== '' 
+      ));
 
         console.log('Estructura: ', jsonData);
 
@@ -237,14 +238,14 @@ export class CargaMasivaCampanasComponent {
   
         if (Array.isArray(jsonData)) {
           jsonData = jsonData.filter((element) =>
-            element.cedula !== '' &&
-            element.nombres !== '' &&
-            element.apellidos !== '' &&
-            element.celular1 !== '' &&
-            element.genero !== '' &&
-            element.nombreEvento !== '' &&
-            element.fechaEvento !== '' &&
-            element.autorizaDatos !== ''
+            element.cedula !== '' 
+            // element.nombres !== '' &&
+            // element.apellidos !== '' &&
+            // element.celular1 !== '' &&
+            // element.genero !== '' &&
+            // element.nombreEvento !== '' &&
+            // element.fechaEvento !== '' &&
+            // element.autorizaDatos !== ''
           );
   
           if (jsonData.length > 0) {
@@ -266,14 +267,14 @@ export class CargaMasivaCampanasComponent {
               telefono1: elemento.telefono1 || "No registra",
               celular1: elemento.celular1,
               correo1: elemento.correo1 || "No registra",
-              fechaNacimiento: this.transformDate(elemento.fechaNacimiento),
+              fechaNacimiento: this.transformDate(elemento.fechaNacimiento) || "",
               genero: elemento.genero,
               departamento: elemento.departamento,
               ciudad: elemento.ciudad,
               barrio: elemento.barrio || "No registra",
               direccion: elemento.direccion || "No registra",
               nombreEvento: elemento.nombreEvento || "No registra",
-              fechaEvento: this.transformDate(elemento.fechaEvento) || "No registra",
+              fechaEvento: this.transformDate(elemento.fechaEvento) || "",
               ciudadEvento: "",
               autorizaUsoDatosPersonales: elemento.autorizaDatos === "Si" ? true : false
             }));
